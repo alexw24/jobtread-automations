@@ -1,0 +1,33 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+
+# OS
+.DS_Store
+._*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project-specific
+invoices/
+forms/
+*.log
+secrets
+docnotes.md
+jobs-to-delete.txt

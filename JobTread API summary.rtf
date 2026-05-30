@@ -1,0 +1,79 @@
+Summary of JobTread API Main Endpoints
+
+Based on the Pave schema file, this is a comprehensive construction/project management API with 171 schema objects and extensive CRUD operations. 
+
+The API uses a Pave-based architecture (similar to GraphQL) with:
+
+Nested queries with field selection
+Pagination support (page, size, nextPage, previousPage)
+Filtering (where, expressions)
+Sorting (sortBy)
+Grouping and aggregations (group, aggs)
+Relationship traversal
+
+Here are the main endpoint categories:
+
+#Core Entity Queries
+Jobs: job - Main project/job management entity with budget tracking, tasks, documents, and financial data
+Accounts: account - Customer/vendor account management
+Contacts: contact - Contact information management
+Locations: location - Physical location management
+Users: user - User accounts and memberships
+Organizations: organization - Company/organization management
+
+#Task & Project Management
+Tasks: task, taskTemplate, taskType - Task creation, templates, and workflows
+Subtasks: Nested task management
+Task Assignments: taskAssignment - Assignment and delegation
+Task Dependencies: taskDependency - Task ordering and dependencies
+Daily Logs: dailyLog - Daily project activity tracking
+Workflows: workflow, workflowRun, workflowAction - Automated workflow execution
+
+#Financial Operations
+Documents: document, documentTemplate - Invoices, estimates, bills, proposals
+Payments: payment, documentPayment - Payment processing and tracking
+Cost Tracking: costCode, costGroup, costItem, costType - Budget and cost management
+Time Entries: timeEntry - Time tracking for billing
+
+#Files & Media
+Files: file, fileTag - Document storage and categorization
+Comments: comment, commentFile - Commenting system with file attachments
+Line Items: lineItemFile - Files attached to document line items
+
+#Integrations (20+ third-party integrations)
+Accounting: qboIntegration, qbdIntegration (QuickBooks Online/Desktop)
+Payments: stripeIntegration, plaidIntegration
+HR: gustoIntegration
+Imaging: eagleviewIntegration, hoverIntegration, rendrIntegration
+Communication: slackIntegration, twilioIntegration, nicejobIntegration
+Suppliers: homeDepotIntegration, poolcorpIntegration, srsIntegration, qxoIntegration
+Construction: companycamIntegration, evoIntegration
+
+#Custom Fields & Configuration
+Custom Fields: customField, customFieldValue, customFieldMapping
+Units: unit, unitMapping - Measurement units
+Dashboards: dashboard, dashboardTile - Custom dashboards
+Data Views: dataView - Custom data visualization
+
+#Permissions & Security
+ACLs: ace (Access Control Entries)
+Roles: role, roleType - Role-based access control
+Grants: grant - Permission grants
+Permissions: can, whoCan - Permission checking queries
+
+#Events & Notifications
+Events: event, eventType - System event tracking
+Notifications: notification, notificationSubscription
+Webhooks: webhook - External webhook integrations
+Custom Notifications: customNotificationType
+
+#Forms & Data Collection
+Web Forms: webForm - Customer-facing forms
+Survey Responses: surveyResponse
+Feature Requests: featureRequest, featureRequestVote
+
+#Meta Operations
+schema - Schema introspection
+version - API version
+currentGrant - Current user permissions
+signQuery - Query signing for security

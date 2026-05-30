@@ -1,0 +1,15 @@
+[Unit]
+Description=JobTread Webhook Receiver
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/hermes/developer/jobtread-api
+ExecStart=/usr/bin/python3 /home/hermes/developer/jobtread-api/webhook_server.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

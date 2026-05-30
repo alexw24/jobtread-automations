@@ -1,0 +1,581 @@
+Glossary of Terms
+Welcome to the JobTread Help Desk Glossary of Terms. This comprehensive resource is designed to assist you in navigating the terminology commonly used within the JobTread platform. Whether you're a new user getting acquainted with the system or an experienced professional seeking clarity on specific terms, this glossary provides clear and concise definitions to enhance your understanding and streamline your experience.
+
+Main Caterogies are `##`
+Terms are `##`
+Definitions follow if available.
+
+##COST ITEMS
+###Allowance
+ 
+An allowance is a bucket of money included in the contract to cover the cost of certain items that have not yet been selected or specified. Typically, these are the items the contractor knows will need to be selected at some point but the choice doesn’t impact the building process. For example, a home builder may include an allowance for the appliance package. The choice doesn’t change how they would complete the install but the price can vary greatly from low end to high end. The allowance acts as a placeholder bucket of money to create a semi accurate project estimate which also helps the homeowner justify the total loan amount with their bank.
+###Allowance Type
+ 
+Determine how you would like to handle your profits by choosing one of the three allowance types. Price allowance includes profit margin in totals. Cost Allowance maintains fixed profit basecd on the initial allowance amount. Cost & Fee Allowance collects an additional profit on overages, if the customer selection exceeds the allowance amount.
+###Cost Code: ID
+ 
+Each cost code in JobTread has an ID that uniquely identifies it. This ID ensures accuracy when referencing cost codes across budgets, reports, and integrations. It is automatically assigned by the system.
+###Cost Code: Name
+ 
+The name of a cost code provides clarity on what the code represents. Common examples include 'Framing' or 'Plumbing.' Names make cost codes easier to use when estimating, budgeting, and reporting. You will set these up in your Job Costing tab, within your organization settings.
+###Cost Code: Number
+ 
+Cost code numbers organize cost categories in a standardized way. For example, '0300' might represent concrete. Using numbers ensures consistency across jobs and aligns with construction accounting best practices.
+###Cost Code: Parent Cost Code
+ 
+Parent cost codes group individual cost codes into broader categories. For instance, '0300 Concrete' may contain subcodes for footings, slabs, and walls. This hierarchy helps organize budgets and improves reporting clarity.
+###Cost Code: Parent Cost Code: ID
+ 
+Every parent cost code has a system assigned ID. This ensures that parent child cost code relationships are tracked accurately in JobTread. It allows for structured reporting and integration consistency.
+###Cost Code: Parent Cost Code: Name
+ 
+The parent cost code name describes the broader category that contains subcodes. For example, 'Concrete' may be the parent name for codes like footings or slabs. It provides an organized structure for budgeting and reporting.
+###Cost Code: Parent Cost Code: Number
+ 
+The number assigned to a parent cost code represents the category in a structured system. For example, '0300' could be concrete, with child codes like '0310' for slabs representing a subcategory. This keeps cost tracking consistent and clear.
+###Cost Item
+ 
+Line item costs associated with a job. This includes labor, materials, subcontractor costs, equipment rental, permitting, and more. Cost items can be added to the catalog to quickly copy them to future jobs.
+###Cost Item ID
+ 
+Every cost item in JobTread has a unique ID. This ID ensures cost items are properly tracked across budgets, invoices, and reports. It prevents errors and maintains consistency across records.
+###Cost Type: Created At
+ 
+This is the system timestamp for when a cost type record was created. Tracking creation dates provides an audit trail for setup and ensures visibility into when financial structures were established.
+###Cost Type: ID
+ 
+Each cost type in JobTread has an ID that uniquely identifies it. This ID ensures that cost types are referenced accurately in budgets, invoices, and reports. It is automatically assigned by the system.
+###Cost Type: Is Taxable
+ 
+This field shows whether a cost type should have tax applied. Taxable cost types affect how invoices and budgets are calculated. Setting this correctly ensures compliance with tax reporting requirements.
+###Cost Type: Margin
+ 
+The margin for a cost type represents the expected profit percentage applied to that category of costs. It helps standardize pricing and ensures consistent profitability across similar types of expenses in JobTread.
+###Cost Type: Name
+ 
+The name identifies and labels the cost type and provides clarity in estimates, budgets, and invoices. Examples might include 'Labor' or 'Materials.' Clear naming conventions improve team communication and financial tracking.
+###Created At
+ 
+Every record in JobTread has a creation timestamp. This helps track when entries were added and provides an audit trail. It ensures data accuracy and supports project management oversight.
+###Files Count
+ 
+Numeric indicator of how many files are linked to a record in JobTread. Files may include contracts, photos, or invoices. Tracking file count helps ensure proper documentation is stored for each job or customer.
+###Is Taxable
+ 
+This flag indicates whether tax should be applied to a specific cost item or line. It affects how budgets and invoices are calculated. Setting this properly ensures compliance with tax laws.
+###Margin
+ 
+Margin represents the percentage of profit applied on top of job costs. It ensures you are making money beyond just covering expenses. JobTread uses margin in budgets and reports to calculate profitability.
+###Markup
+ 
+Markup is the percentage added to costs to determine the customer price. Markup is calclated by subtracting the cost of an item from it's price, then diving it by the price and then multiplying that number by 100. Unlike margin, markup is calculated from the cost base rather than profit. JobTread allows you to track both markup and margin for accurate pricing.
+###Quantity
+ 
+Quantity represents how many units of a cost item are required for a job. For example, 500 square feet of flooring or 20 hours of labor. Setting quantities accurately ensures realistic budgets and invoices.
+###Quantity Formula
+ 
+A quantity formula automates the calculation of necessary units based on job parameters. For example, it could calculate paint gallons needed using wall square footage. This improves estimating accuracy and saves time.
+###Require Specification Approval
+ 
+This setting requires customer approval of a cost item in order for it to be included as specification item as it becomes active in a job. This helps contractors manage change orders and ensures that selections are authorized before work begins.
+###Specification
+ 
+Specifications define materials, products, or finishes to be used in a job. For example, “12x24 porcelain tile in gray finish.” JobTread tracks specifications in the specifications tab to keep teams aligned and customers informed.
+###Unit
+ 
+Units define how a cost item is measured, such as square feet, hours, or each. Proper units ensure quantities and costs are consistent across jobs. They provide clarity in estimating, purchasing, and billing.
+###Unit Cost
+ 
+Unit Cost represents the contractor’s expense for one unit of a cost item, such as $3.00 per square foot of flooring. Accurate unit costs ensure budgets reflect real expenses and allow for precise profitability tracking.
+###Unit Cost Formula
+ 
+A unit cost formula automates the calculation of a cost per unit based on job data. For example, labor cost per square foot could be derived from crew size and hourly rate. This streamlines estimating and reporting.
+###Unit Price
+ 
+Unit Price is the billed rate to the customer for one unit of a cost item, such as $6.00 per square foot of flooring. This includes cost plus markup or margin. Tracking unit price ensures invoices align with estimates.
+###Unit Price Formula
+ 
+A unit price formula automates how the customer’s price is calculated from cost data. It may include markup, labor rates, or material factors. This ensures accurate pricing and consistency across jobs.
+###Write In
+ 
+Items or materials that the Customer has personally chosen and specified, typically outside of the standard or pre approved options. Within JobTread, allowing for Customer write ins will enable your Customer to update the description, quantity and files for this item when enabled on a Customer Order
+##CUSTOMERS
+###Collected Invoices
+ 
+Collected Invoices shows the amount of money actually received from customers. This figure helps you track cash flow and compare it against amounts invoiced. It ensures accurate financial reporting.
+###Created At
+ 
+The Created At timestamp shows when a customer was first entered into JobTread. It provides a record of account creation for auditing and tracking customer history.
+###Customer ID
+ 
+Each customer in JobTread is assigned an ID for system tracking. This ensures accuracy in jobs, invoices, and reports. IDs keep records unique and prevent mix ups between customers.
+###Lead Source
+ 
+Lead Source shows how a customer first found your business, such as referral, website, or social media. Tracking sources helps identify effective marketing channels.
+###Primary Contact: ID
+ 
+Each primary contact is assigned a system generated ID. This ensures the right person is linked to the customer account. IDs keep communications and job records connected to the correct contact.
+###Primary Location: Created At
+ 
+This shows when the primary location record was added in JobTread. It helps track address data entry and provides an audit trail for record management.
+###Primary Location: Display Name
+ 
+The display name makes a customer’s primary location easy to identify, such as “Main Office” or “Jobsite.” Clear naming ensures quick navigation when multiple addresses exist.
+###Primary Location: ID
+ 
+Each customer’s main location has its own JobTread ID. This ensures jobs and invoices are tied to the right place. IDs also allow for accurate mapping and integration with other systems.
+##DAILY LOGS
+###Created At
+ 
+This timestamp shows when a daily log was entered in JobTread. It provides accountability and ensures project records are tracked in chronological order.
+###Daily Log ID
+ 
+Each daily log entry has its own JobTread system ID. This allows JobTread to reference logs accurately in reporting and project history. IDs ensure records remain unique.
+##DOCUMENTS
+###Add Files
+ 
+This option allows contractors to add supporting documents, such as terms and conditions or brochures. Files are attached automatically whenever the document type is created.
+###Allow Partial Payments
+ 
+When enabled, customers can make partial payments on invoices using credit card or ACH. If disabled, invoices must be paid in full. This provides flexibility in managing customer payments.
+###Balance
+ 
+Balance shows how much money is still unpaid on an invoice or contract. It helps track outstanding receivables. Monitoring balances ensures cash flow is managed effectively.
+###Bid Request
+ 
+A bid request is a document sent to vendors to collect pricing for materials or services. Contractors use them to compare quotes and choose the best option for the project. JobTread bid requests streamline vendor communication and documentation.
+###Change order
+ 
+A change order is used to record an amendment to the original contract, typically involving changes in the scope of work, materials, or costs. Change orders are used to document changes, collect customer signatures, and make adjustments to the Budgeted Cost column in a job budget.
+###Cost
+ 
+Cost reflects the actual expense for materials, labor, or services recorded in JobTread. It is used to calculate profitability. Accurate cost tracking is essential for financial reporting.
+###Cost With Tax
+ 
+This field shows cost amounts after applicable taxes are added. It ensures estimates and invoices reflect full amounts customers must pay. Accurate tax application is critical for compliance.
+###Customer Invoice
+ 
+Customer invoices are sent to clients to request payment for labor, materials, or milestones. They include payment terms and can allow for partial or full payments. In JobTread, invoices are tied directly to job budgets and financial tracking.
+###Customer Order
+ 
+A customer order creates an official record of what the client has approved. It captures customer selections, scope of work, and pricing. This document is typically signed by the customer and becomes part of the project contract.
+###Description
+ 
+The Description field allows contractors to include project details, scope of work, or job notes. It appears at the top of the document for the recipient. Using descriptions ensures the customer understands the context of the document.
+###Design Tab
+
+###Document ID
+ 
+Every document in JobTread, such as an invoice or contract, has a system assigned ID. This ID ensures accuracy in tracking, reporting, and integrations.
+###Document Name
+ 
+Document Name is the heading shown to customers or vendors when they receive a document. It should clearly identify the type of document and job it relates to. A professional name improves clarity and customer communication.
+###Document Template
+ 
+Document templates are pre configured formats for common documents like bids, invoices, and purchase orders. JobTread provides default templates that can be customized or duplicated. Templates save time, ensure consistency, and standardize communication with customers and vendors.
+###Due Days
+ 
+Due Days defines the timeframe a customer or vendor has to meet the document’s terms, such as payment or delivery. Setting clear due days ensures expectations are communicated.
+###Email Message
+ 
+Message that accompanies a document that can templated or be customized before sending. Templating this message can save time and ensures consistent, professional communication with clients and vendors.
+###External ID
+ 
+External IDs are used when JobTread data links to third party systems like QuickBooks. They ensure records match correctly between platforms. This prevents duplication and maintains data integrity.
+###Footer
+ 
+The footer provides space for contractual language, disclaimers, or payment terms. It appears at the bottom of the document. Using a footer ensures important legal or financial details are always included.
+###Payment Schedule Tab
+ 
+The Payment Schedule Tab allows contractors to define installment payments within customer orders using invoices, progress invoices and deposits. This is useful for jobs with consistent billing structures. It helps standardize and automate invoicing.
+###Prepared By
+ 
+Prepared By auto populates with the JobTread user’s contact information when a document is created. This shows who created the document and provides a point of contact for recipients. This can also be templated within each Document Template to show a consistent "prepared by" sender.
+###Price
+ 
+Price is the customer facing amount set for a job, item, or service. It is typically calculated by adding markup or margin to the cost. Tracking price ensures estimates and invoices reflect agreed amounts.
+###Price With Tax
+ 
+This field shows the price after applicable sales tax is added. It ensures customers see the full amount due. Including tax in pricing helps avoid confusion during invoicing.
+###Purchase Order
+ 
+Purchase Orders, aka POs, are a formal document issued from a buyer to a seller, specifying the products, quantities, and agreed prices for the products and services. For contractors, POs are used to formalize purchases with vendors but also act as contracts with subcontractors to perform work (often called a work order). POs allow you to commit funds without paying out the funds yet.
+###QBO Link
+
+###Recipient Email Address
+ 
+This shows which contact received an emailed document from JobTread. It provides a record of delivery and helps confirm communication with customers or vendors.
+###Recipient Last Active At
+ 
+This field shows when a recipient last interacted with a document email, such as opening it. It provides visibility into customer engagement.
+###Recipient Last Viewed At
+ 
+This indicates when a recipient last opened and looked at the document. It helps confirm customer awareness and can support payment follow up.
+###Require Signature
+ 
+Require Signature toggle adds a digital signature field to documents. It is typically used for customer orders, contracts, or approvals. Signatures create a binding agreement and provide legal protection.
+###Show Costs and Fee
+ 
+This setting displays cost and fee lines above the subtotal in a document. It is commonly used in cost plus jobs for transparency. When disabled, customers see a single price that includes both cost and profit.
+###Show Financing
+ 
+This setting allows contractors to show customers financing options when opening a customer order or invoice. Customers can apply for financing directly through Acorn to help fund their project.
+###Show Line Item Files
+ 
+This setting displays files, photos, or videos linked to catalog items directly in the document. Contractors may disable this to hide internal files. It improves transparency when enabled.
+###Template Name
+ 
+Template Name is how you distinguish between different templates of the same document type in JobTread. For example, invoice templates might be labeled “Net 30” or “Net 60.” This makes it easier to select the right format quickly.
+###Vendor Bill
+ 
+Vendor bills log the charges from suppliers and subcontractors. Recording bills ensures expenses are tied to the correct job and vendor. Tracking vendor bills helps manage cash flow and financial accuracy. Creating a Vendor bill gives you a link to the Vendor Invoice, and a papertrail within JobTread.
+###Vendor Order
+ 
+Vendor orders document what has been requested from vendors, such as materials or subcontracted work. They act as binding agreements and help contractors track committed costs. JobTread vendor orders keep vendor communication organized.
+##JOBS
+###% Cost Complete
+ 
+Shows the percentage of the total job cost that has been incurred so far, calculated as Actual Cost ÷ Projected Cost × 100. This helps track how far along the project is financially compared to its budget.
+###Actual Hours
+ 
+The total number of labor hours logged to a job through time entries. Use this to compare actual labor against budgeted hours.
+###Approved Orders
+ 
+Approved Orders show the dollar value of selections or changes a customer has signed off on. They form part of the contract total. Tracking approvals ensures invoicing aligns with customer agreements and represents the contractual amount for which you are authorized to bill.
+###Approved Orders with Tax
+ 
+The total value of approved customer orders, including applicable sales tax. This shows the full amount the customer has committed to pay.
+###Budget Variance
+ 
+Budget Variance shows whether a job is under or over budget. Positive variance means costs are lower than planned. Monitoring variances ensures profitability is protected.
+###Budgeted Hours
+ 
+Budgeted Hours show how many hours were estimated to complete a job. Comparing to actual hours highlights scheduling and efficiency. Accurate budgeting improves future estimates.
+###Cash Flow
+
+###Closed On Date
+ 
+Closed On Date shows when the job was officially completed and closed in JobTread. This finalizes reporting and prevents further edits to the job.
+###Committed Cost
+ 
+Committed Cost reflects expenses that have been contracted through PO's or subcontracts but not yet invoiced. It provides visibility into financial obligations before payment occurs. Monitoring committed costs helps avoid overspending.
+###CompanyCam Link
+
+###Cost plus
+
+###Cost to complete
+
+###Created At
+
+###Customer ID
+ 
+Each job is associated with a customer ID in JobTread. This ensures jobs are tied to the correct client. It prevents errors in reporting, billing, and customer management.
+###Customer Name
+
+###Description
+
+###Earned Revenue
+ 
+Earned Revenue shows how much of the contract value can be recognized based on progress. It helps track profitability in jobs with ongoing billing.
+###Estimator
+ 
+Custom Field for who identifies the team member who created the job’s pricing. Tracking estimator performance helps measure accuracy and efficiency.
+###Fixed price
+ 
+Fixed price is the most common contract type where the contractor presents the customer a set price to complete the job. The profit the contractor intends to make is typically hidden and invoices are based on milestones set within the contract. Adjustments to the contract should be processed as change orders.
+###Grippage
+
+###Gross profit
+
+###Job ID
+ 
+Each job has a system generated ID that distinguishes it from others. This ID ensures accuracy across reports, invoices, and integrations.
+###Job Sold Date
+ 
+Job Sold Date marks when the customer formally approved the project. This date is critical for sales reporting and job pipeline tracking.
+###Job Type
+ 
+Job Type classifies the kind of work, such as remodel, new build, or service. Categorizing jobs improves reporting and helps tailor estimating templates.
+###Line Items Updated At
+ 
+This timestamp shows when cost items or line items in a job were last modified. It helps track changes for auditing and ensures the budget and scope stay current.
+###Material takeoff
+
+###Name
+ 
+The Name field is a descriptive title for a job, document, or task. Consistent naming helps with organization and quick reference.
+###Net profit
+
+###Number
+ 
+Numbers uniquely identify records like jobs, documents, or tasks. They help organize records and support quick lookups.
+###Open Invoices with Tax
+
+###Original Approved Order
+ 
+Original Approved Order reflects the initial signed contract value. It provides a baseline for tracking changes through revisions or change orders.
+###Original Approved Order with Tax
+
+###Original Budget Cost
+ 
+Original Budget Cost represents the initial planned expenses. Comparing it to actual costs helps measure accuracy in estimating.
+###Over Invoiced
+
+###Paid Invoices
+
+###Paid Invoices with Tax
+
+###Pending Orders
+
+###Pending Orders with Tax
+
+###Price Type
+ 
+Defines how the job’s price is calculated—cost plus, fixed price, or no customer. This determines how invoices are structured and profit is applied.
+###Project Manager
+ 
+Custom Field for the accountable owner for schedule, subs, and customer comms. Set this field so tasks, approvals, and issues have a clear driver.
+###Projected Profit Per Day
+ 
+This metric shows expected profit per day of scheduled work. It helps contractors assess efficiency and compare jobs of different sizes.
+###Remaining Balance
+
+###Remaining Balance with Tax
+
+###Scope of work
+ 
+A list of construction obligations that the contractor is agreeing to provide for the customer. It typically includes all aspects of the job in sequential order.
+###Slippage
+ 
+The difference in gross profit percentage on a job from what it was originally estimated to be. Slippage is negative, meaning you did not make as much as you originally intended. For example, if your estimated profit was 35% and you hit 33%, this is 2% slippage. The opposite of slippage is grippage.
+###Status
+ 
+Status shows whether a job is active, pending, completed, or closed. It helps contractors track progress across all projects. Drive automations and views from this.
+###Under Invoiced
+ 
+Under Invoiced highlights when invoices do not match the approved contract total. It helps contractors catch billing gaps.
+###Variance
+ 
+The difference between budgeted and actual figures.
+###WIP Report
+
+##SCHEDULE
+###% Tasks Completed
+
+###Baseline
+
+###Baseline Days
+
+###Baseline End Date
+
+###Baseline End Date Variance
+
+###Baseline Profit Per Day
+
+###Baseline Start Date
+
+###Baseline Start Date Variance
+
+###Completed Tasks
+
+###Dependencies
+
+###Incomplete Tasks
+
+###Lag Time
+
+###Latest Completed Task Date
+
+###Latest Completed Task Name
+
+###Location Name
+
+###Next Scheduled Task Date
+
+###Next Scheduled Task Name
+
+###Progress
+
+###Punchlist
+
+###Schedule Published
+
+###Scheduled Days
+
+###Scheduled End Date
+
+###Scheduled Start Date
+
+###Task Created At
+
+###Task ID
+
+###Task Type
+
+##BUDGET
+###% Invoiced
+
+###Actual Cost
+ 
+Actual Cost is the true expense recorded for materials, labor, or services. It is compared against budgeted costs to measure financial performance. Tracking actual costs ensures profitability analysis is accurate.
+###Backcharge
+ 
+A backcharge is a request for reimbursement sent to a contractor after deficiencies were found in the work they performed, if they didn’t complete a portion of the work, or if they caused damage while on site.
+###Budget Cost
+
+###Budgeted Margin
+
+###Budgeted Markup
+
+###Budgeted Profit
+
+###Collected
+
+###Collected with Tax
+
+###Contingency
+ 
+Contingencies are a set dollar amount included on the contract meant for unforeseen costs. Instead of billing the client for small adjustments, the contractor would pull from the contingency fund first. This can help move the job along at a quicker pace because the money has already been approved to spend.
+###Cost codes
+ 
+Cost codes are the accounting buckets that all cost items will fall under. Every cost item in the system is going to be tied to a cost code. Because cost codes are what connect to QuickBooks Products/Services, they shouldn’t change often. The idea is you may add thousands of cost items over time but they should all fall under an existing code.
+###Cost groups
+ 
+Cost groups (aka cost templates) are groups of cost items. Groups can be created in the catalog as templates to make estimating quicker. They also allow you to organize the budget into smaller chunks to make large budgets more digestible. Cost groups can include subgroups, up to 5 levels deep.
+###Cost To Complete
+
+###Direct costs
+
+###Draw request
+
+###Draw schedule
+
+###Indirect Costs / Overhead
+
+###Invoiced
+
+###Margin
+
+###Markup
+
+###Open Invoices
+ 
+Open Invoices shows how much is outstanding for a job. Tracking unpaid invoices helps manage cash flow and follow up with customers.
+Projected Cost
+
+###Projected Margin
+
+###Projected Price
+
+###Projected Profit
+
+###Purchase Tax
+
+###QBO Link
+
+###Retainage
+
+###RFI
+
+###RFQ
+
+###Sales Tax
+
+###Selection
+ 
+Selections are choices of materials, finishes, fixtures, and equipment that the homeowner, architect, or designer must make to complete the project. This is often called the “selections process” and JobTread offers a few different workflows to collect these choices.
+###Submittal
+
+###Takeoff
+
+###To Be Invoiced
+
+##MESSAGING
+###Direct Message
+ 
+Messaging between or among internal or external members that is unrelated to any location within JobTread. Administration may view all direct messaging.
+###Inbox
+ 
+The inbox is the main location where incoming messages are stored. Within JobTread, the inbox organizes all job specific communications, making it easy to review, search, and respond to messages from customers, vendors, and team members.
+###Pin
+ 
+Pinning a message keeps it at the top of your inbox and activity feed for quick reference. This feature is useful for highlighting important communications, ensuring they remain visible and easy to find even as new messages arrive.
+###Quote
+
+###Subject
+
+###Unread
+
+##LOCATIONS
+###Display Name
+ 
+Location Display Name is the title shown for an address in JobTread. It helps identify the location, such as “Main Office,” “Jobsite,” or “Billing Address.” Clear display names make it easier to manage multiple locations for the same customer.
+###Primary Contact
+ 
+Location Primary Contact identifies the person responsible for communication at a specific location. For example, a customer may have a billing contact at their office and a different contact at the jobsite. Assigning a primary contact ensures messages and documents reach the right person.
+###Tax Rate
+
+##PAYMENTS
+###Applied Amount
+
+###Method
+ 
+Method specifies how a customer paid, such as credit card, check, or ACH. Tracking methods helps analyze customer preferences. You can type the name of a more specific method if needed.
+###Payment Account ID
+ 
+Account ID distinguishes each account record used for payments. It ensures accuracy in tracking and integrations.
+###Payment Account Name
+ 
+Account Name identifies the account used, such as “Operating Account.” Clear naming supports accurate reporting.
+###Payment Account Type
+ 
+Account Type classifies accounts, such as bank, credit, or escrow. This helps organize finances within JobTread.
+###Payment ID
+ 
+Each payment record in JobTread has a system assigned ID. This ensures accuracy in financial reporting and reconciliation.
+###QBO Link
+
+###Received
+
+###Reference Number
+ 
+Reference Numbers identify payments, such as a check number or transaction ID. They provide traceability in records.
+###Stripe URL
+
+###Unapplied Amount
+ 
+Unapplied Amount shows money received from a customer that hasn’t yet been matched to an invoice. It may be held as a customer credit for future use. Tracking unapplied amounts ensures accurate account balances.
+##TIME ENTRIES
+###Burdened Rate
+ 
+The burdened rate is the total pay on a company’s dime for employing an employee per hour. This is different from the amount you pay the employee because the burdened rate includes overhead. The goal is to track the true cost of employing the person against what the contractor budgeted for labor on each project.
+###End Coordinates Latitude
+
+###End Coordinates Longitude
+
+###Ended At
+
+###Hourly Rate
+
+###QBO ID
+
+###Start Coordinates Latitude
+
+###Start Coordinates Longitude
+
+###Started At
+
+###Time Entry ID
+
+###Type
+
+##VENDORS
+###Archived At
+
+###COI
+
+###Created At
+
+###Lien Waiver
+
+###Vendor ID
