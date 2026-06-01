@@ -87,15 +87,13 @@ class TestWaterTreatmentAutomatorDryRun(unittest.TestCase):
         }
         mock_client.query.return_value = job_response
         
-        # Mock template response for recursive copies
-        mock_client.add_cost_group_from_template_recursive.return_value = {
-            "costGroup": {
-                "id": "new-test-group-id",
-                "name": "Whole House Filtration"
-            },
-            "costItems": []
+        # Mock the budget-build + document-copy flow
+        mock_client.create_document_from_template.return_value = {
+            "id": "new-doc-id",
+            "name": "Water Treatment Proposal",
+            "type": "customerOrder"
         }
-        
+
         # Run automator with mock client
         automator = WaterTreatmentAutomator()
         automator.client = mock_client
@@ -110,16 +108,16 @@ class TestWaterTreatmentAutomatorDryRun(unittest.TestCase):
         self.assertEqual(len(comment_calls), 1)
         sent_cmt = comment_calls[0][0][0]["createComment"]["$"]["message"]
         self.assertEqual(
-            sent_cmt, 
-            "Hi Alex Witkowski! Thank you for filling out Gentry's Water Softener form. We're reviewing your submission and writing your quote now."
+            sent_cmt,
+            "Hi Alex Witkowski! Thank you for filling out our Water Softener form. We're reviewing your submission and writing your quote now."
         )
         print("--> Reply message asserted perfectly.")
 
-        # Verify recursive add was invoked for selected packages
-        self.assertTrue(mock_client.add_cost_group_from_template_recursive.called)
-        add_calls = mock_client.add_cost_group_from_template_recursive.call_args_list
+        # Verify the budget+document flow was invoked with the selected packages
+        self.assertTrue(mock_client.create_document_from_template.called)
+        doc_call = mock_client.create_document_from_template.call_args
         # Whole House Filtration package should be pulled based on origin_page='water-softener'
-        self.assertEqual(add_calls[0][1]["template_group_id"], "22PCTaQaFm3e") # PKGP_WHOLE_HOUSE_FILTRATION_ID
+        self.assertEqual(doc_call[1]["package_template_ids"], ["22PCTaQaFm3e"]) # PKGP_WHOLE_HOUSE_FILTRATION_ID
         print("--> Budget additions asserted perfectly. Zero dummy jobs written!")
 
 if __name__ == "__main__":

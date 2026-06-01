@@ -77,3 +77,65 @@ schema - Schema introspection
 version - API version
 currentGrant - Current user permissions
 signQuery - Query signing for security
+
+
+=====================================================================
+PRACTICAL NOTES (learned while building the Gentry water-treatment automation)
+=====================================================================
+
+#Budget vs. Document data model (IMPORTANT)
+The "Budget" shown in the JobTread UI and a Document (proposal/estimate) are TWO
+SEPARATE sets of cost groups/items, linked at the item level:
+- Budget line items   = costGroup/costItem with job set and document = null.
+                        These are what show in the job's Budget tab.
+- Document line items  = costGroup/costItem with BOTH job and document set. They are
+                        separate copies that mirror the budget tree.
+- The link            = each DOCUMENT costItem has jobCostItem -> the corresponding
+                        BUDGET costItem (input field: jobCostItemId). This is how the
+                        system counts them once: "estimated price" comes from the
+                        budget, "approved price" comes from the (approved) document.
+- includeInBudget (on document) = a financial-tracking flag meaning the document's
+                        line items participate in the job's budget totals. It is NOT
+                        the thing that builds the line-item budget. The frontend
+                        "create document from budget" flow sets it True.
+- Catalog masters     = both budget and document items keep organizationCostItem
+                        pointing at the catalog/master cost item (organizationCostItemId).
+- There is NO jobCostGroupId; only ITEMS carry the budget link. Groups are just
+                        structural copies (cost group selection settings/files copy over).
+
+#How to "create budget from template" then "create document from budget"
+There is no single instant copy call; it's read-then-resubmit (same pattern as
+copying a catalog template into a document):
+1. Build budget: createCostGroup with jobId (NOT documentId). createCostGroup accepts
+   nested lineItems (newCostGroup/newCostItem) AND files, so a whole package tree is
+   built in one mutation. These groups have document = null -> appear in Budget tab.
+2. Create document from budget: query the budget tree back, then createDocument with
+   lineItems mirroring it, where each newCostItem sets jobCostItemId = the budget
+   item's id. Set includeInBudget = true.
+(See jobtread.py: create_budget_from_packages + create_document_from_template.)
+
+#Payment schedule (deposit / progress / final invoices)
+- A document template's payment schedule lives in documentTemplate.scheduledDocuments
+  (entity: documentTemplateScheduledDocument) with fields: name, amount, percentage,
+  sendOnCreation, createFromDocumentTemplate{id}, position.
+- percentage is a FRACTION <= 1 (0.3 = 30%); amount is a fixed dollar value. One row
+  uses one or the other (often the final/balance row has neither).
+- Copy onto createDocument via the scheduledDocuments[] input (max 20): name, amount,
+  percentage, sendOnCreation, createFromDocumentTemplateId. Also pass
+  showScheduledDocuments. On a created document they surface as
+  document.scheduledDocuments (entity: scheduledDocument; also has createdDocument).
+
+#Pave query gotchas (status 400 unless you do these)
+- size must go INSIDE the "$" object, and max size is 100.
+- You CANNOT compare a field to null in where ({"=":[{"field":...}, null]} is rejected
+  with "A non-null value is required"). Fetch rows and filter client-side instead
+  (e.g. to find budget groups: query all job costGroups, keep document == null).
+- Status 413 "Request Entity Too Large" means the RESPONSE is too big -> split into
+  several smaller queries / request fewer fields, rather than one big nested query.
+- deleteCostGroup returns "You don't have permission to delete this cost group" while
+  a document still links to it via jobCostItem. Delete the document first, then the
+  budget cost group is deletable.
+
+#Auth / client
+jobtread.py wraps everything: JobTreadClient() reads GRANT_KEY from .env;
+client.query(<pave dict>) is the low-level escape hatch for raw read/write queries.

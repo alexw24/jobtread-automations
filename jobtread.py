@@ -351,9 +351,16 @@ class JobTreadClient:
         res = self.query(payload)
         return res["createDocument"]["createdDocument"]
 
-    def _catalog_template_as_lineitem(self, template_group_id, collapse_group_names=None):
-        """Fetch a catalog cost group template and all its descendants, returning a newCostGroup dict
-        suitable for use as a createDocument lineItem entry. No mutations are made."""
+    def _catalog_template_as_lineitem(self, template_group_id, collapse_group_names=None,
+                                      link_job_cost_items=False):
+        """Fetch a cost group (catalog template OR job budget) and all its descendants, returning a
+        newCostGroup dict suitable for use as a createDocument/createCostGroup lineItem entry.
+
+        When link_job_cost_items=True, each cost-item entry carries jobCostItemId = the source
+        item's id. This is used when copying a job BUDGET into a document: the resulting document
+        items stay linked to their budget items (so JobTread counts them once — estimated price
+        from the budget, approved price from the document). No mutations are made.
+        """
         collapse_group_names = collapse_group_names or set()
 
         node_fields = {
@@ -454,6 +461,8 @@ class JobTreadClient:
             if i.get("description"): entry["description"] = i["description"]
             if i.get("costCode"): entry["costCodeId"] = i["costCode"]["id"]
             if master.get("id"): entry["organizationCostItemId"] = master["id"]
+            # Link the document item back to its source budget item (see docstring).
+            if link_job_cost_items: entry["jobCostItemId"] = i["id"]
             if qty_formula: entry["quantityFormula"] = qty_formula
             if cost_formula: entry["unitCostFormula"] = cost_formula
             elif cost is not None: entry["unitCost"] = cost
@@ -466,13 +475,52 @@ class JobTreadClient:
 
         return group_entry(root)
 
-    def create_document_from_template(self, job_id, template_id, package_template_ids=None, collapse_group_names=None):
-        """Create a proposal document using a document template, with catalog packages as inline line items.
+    def create_budget_from_packages(self, job_id, package_template_ids=None, collapse_group_names=None):
+        """Build the job BUDGET from catalog package templates.
 
-        Packages are fetched from the catalog as newCostGroup/newCostItem entries and passed directly
-        into createDocument. With includeInBudget=True (default), the document IS the budget.
-        No separate budget mutations are needed.
+        Each package is instantiated as a top-level cost group directly on the job
+        (createCostGroup with jobId, no documentId), carrying its full nested hierarchy,
+        attached files, and selection options. These budget cost groups have document=None —
+        they are what shows in the job's Budget tab. createCostGroup accepts nested `lineItems`
+        and `files`, so each package tree is created in a single mutation.
+
+        Returns the list of created top-level budget cost groups (id, name).
         """
+        created_groups = []
+        for pkg_id in (package_template_ids or []):
+            entry = self._catalog_template_as_lineitem(pkg_id, collapse_group_names)
+            # `entry` is a newCostGroup-shaped dict; its fields map directly onto the
+            # createCostGroup input (name, description, files, selections, nested lineItems...).
+            args = {k: v for k, v in entry.items() if k != "_type"}
+            args["jobId"] = job_id
+            payload = {
+                "createCostGroup": {
+                    "$": args,
+                    "createdCostGroup": {"id": {}, "name": {}}
+                }
+            }
+            res = self.query(payload)
+            created_groups.append(res["createCostGroup"]["createdCostGroup"])
+        return created_groups
+
+    def create_document_from_template(self, job_id, template_id, package_template_ids=None, collapse_group_names=None):
+        """Build the job budget from catalog packages, then create a document copying the budget.
+
+        Mirrors JobTread's own "create document from budget" flow:
+          1. Each selected package is built on the job BUDGET (createCostGroup with jobId —
+             document=None, shows in the Budget tab), retaining files and selection options.
+          2. A document is created whose line items mirror that budget tree, with each item
+             carrying jobCostItemId = its budget item's id. The document items stay linked to
+             the budget items, so JobTread counts them once (estimated price from the budget,
+             approved price from the document).
+
+        The document also inherits the template's header settings, selection display, and
+        payment schedule (scheduledDocuments — e.g. deposit + remaining balance).
+        """
+        # Phase 1: build the budget on the job from the catalog packages.
+        budget_groups = self.create_budget_from_packages(job_id, package_template_ids, collapse_group_names)
+
+        # Phase 2: fetch template + job context (including the template's payment schedule).
         q = {
             "currentGrant": {
                 "organization": {
@@ -486,7 +534,16 @@ class JobTreadClient:
                             "dueDays": {}, "emailMessage": {}, "coverPageTitle": {},
                             "coverPageSubtitle": {}, "coverPageTemplate": {}, "description": {},
                             "groupsStartCollapsed": {}, "showLinesAtDepth": {},
-                            "showProfit": {}, "showCostItemFiles": {}, "allowPartialPayments": {}
+                            "showProfit": {}, "showCostItemFiles": {}, "allowPartialPayments": {},
+                            "showScheduledDocuments": {},
+                            "scheduledDocuments": {
+                                "$": {"sortBy": [{"field": ["position"], "order": "asc"}]},
+                                "nodes": {
+                                    "id": {}, "name": {}, "amount": {}, "percentage": {},
+                                    "sendOnCreation": {},
+                                    "createFromDocumentTemplate": {"id": {}}
+                                }
+                            }
                         }
                     },
                     "jobs": {
@@ -525,10 +582,28 @@ class JobTreadClient:
         to_phone = contact_cfs.get("Phone")
         to_address = ((account.get("primaryLocation") or {}).get("address"))
 
+        # Build the document's line items by mirroring the budget groups created in phase 1.
+        # link_job_cost_items=True sets jobCostItemId on each item so the document stays linked
+        # to the budget. Files and selection options carry through from the budget.
         line_items = [
-            self._catalog_template_as_lineitem(pkg_id, collapse_group_names)
-            for pkg_id in (package_template_ids or [])
+            self._catalog_template_as_lineitem(grp["id"], collapse_group_names, link_job_cost_items=True)
+            for grp in budget_groups
         ]
+
+        # Copy the payment schedule from the document template. Each scheduled document maps a
+        # percentage/amount to a child document template that JobTread auto-issues (e.g. deposit,
+        # progress, and final invoices) once the proposal is approved.
+        scheduled_documents = []
+        for sd in (tmpl.get("scheduledDocuments") or {}).get("nodes", []):
+            entry = {"name": sd["name"], "sendOnCreation": sd.get("sendOnCreation") or False}
+            if sd.get("amount") is not None:
+                entry["amount"] = sd["amount"]
+            if sd.get("percentage") is not None:
+                entry["percentage"] = sd["percentage"]
+            cff = sd.get("createFromDocumentTemplate") or {}
+            if cff.get("id"):
+                entry["createFromDocumentTemplateId"] = cff["id"]
+            scheduled_documents.append(entry)
 
         payload_args = {
             "jobId": job_id,
@@ -541,9 +616,15 @@ class JobTreadClient:
             "taxRate": 0,
             "jobLocationName": location["name"],
             "jobLocationAddress": location["address"],
+            # includeInBudget = this document's line items are part of the job's budget /
+            # financial tracking. The items link back to the budget via jobCostItemId (set
+            # above), so they are counted once. JobTread's own budget→document flow sets this
+            # True, so we match it.
             "includeInBudget": True,
             "lineItems": line_items
         }
+        if scheduled_documents:
+            payload_args["scheduledDocuments"] = scheduled_documents
         if to_address: payload_args["toAddress"] = to_address
         if to_email: payload_args["toEmailAddress"] = to_email
         if to_phone: payload_args["toPhoneNumber"] = to_phone
@@ -551,6 +632,7 @@ class JobTreadClient:
                       "coverPageTemplate", "description", "requireSignature", "showChildCosts",
                       "showQuantity", "showCostItemFiles", "groupsStartCollapsed",
                       "showLinesAtDepth", "showProfit", "allowPartialPayments",
+                      "showScheduledDocuments",
                       "fromAddress", "fromOrganizationName", "fromEmailAddress", "fromPhoneNumber"):
             val = tmpl.get(field)
             if val is not None:

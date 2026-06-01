@@ -203,16 +203,17 @@ class WaterTreatmentAutomator:
             packages_to_copy.append(PKGP_UV_FILTER_ID)
             print("Action: Pulling UV Filter Tree")
 
-        # 5. Create Water Treatment Proposal document with packages as inline line items.
-        #    includeInBudget=True means the document IS the budget — no separate budget step needed.
-        print(f"\nCreating Water Treatment Proposal with {len(packages_to_copy)} package(s)...")
+        # 5. Build the job budget from the selected catalog packages, then create the Water
+        #    Treatment Proposal document by copying that budget. The document also inherits the
+        #    template's header settings, files, selection display, and payment schedule.
+        print(f"\nBuilding budget and proposal from {len(packages_to_copy)} package(s)...")
         doc = self.client.create_document_from_template(
             job_id,
             WATER_TREATMENT_PROPOSAL_TEMPLATE_ID,
             package_template_ids=packages_to_copy,
             collapse_group_names=COLLAPSE_CHILDREN_GROUPS
         )
-        print(f"--> Proposal '{doc['name']}' (ID: {doc['id']}) created — budget and document populated atomically!")
+        print(f"--> Proposal '{doc['name']}' (ID: {doc['id']}) created from the job budget!")
 
         # 6. Post Internal plumber-warning if pre-plumb status requires manual loop building
         if pre_plumbed_loop == "No" or pre_plumbed_loop is False:
