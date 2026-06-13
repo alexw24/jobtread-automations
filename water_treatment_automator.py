@@ -28,6 +28,33 @@ PKGP_WHOLE_HOUSE_FILTRATION_ID = "22PCTaQaFm3e"  # Whole House Filtration packag
 PKGP_REVERSE_OSMOSIS_ID = "22PCTepJxrY9"         # Reverse Osmosis package
 PKGP_UV_FILTER_ID = "22PCTepJxrYC"               # UV Filter package
 
+# Human-friendly label for each package, used to name the proposal document after
+# what the customer actually requested (not which form they happened to submit).
+PACKAGE_LABELS = {
+    PKGP_WHOLE_HOUSE_FILTRATION_ID: "Whole House Filtration",
+    PKGP_REVERSE_OSMOSIS_ID: "Reverse Osmosis",
+    PKGP_UV_FILTER_ID: "UV Filter",
+}
+
+
+def build_document_name(package_ids):
+    """Name the proposal document after the product(s) the customer requested.
+
+    The name is driven by the *resolved* package list — which already accounts for
+    goal-based upsells (e.g. an RO-form lead who asks for whole-house filtration in
+    their goals gets the Whole House package, and is named accordingly), not by the
+    form the lead originally submitted.
+
+    - no packages  -> "Water Treatment Consultation" (interested lead, undetermined scope)
+    - one package  -> that package's label, e.g. "Reverse Osmosis"
+    - 2+ packages  -> "Water Treatment Package" (a bundle)
+    """
+    if not package_ids:
+        return "Water Treatment Consultation"
+    if len(package_ids) == 1:
+        return PACKAGE_LABELS.get(package_ids[0], "Water Treatment")
+    return "Water Treatment Package"
+
 # Document Template ID
 WATER_TREATMENT_PROPOSAL_TEMPLATE_ID = "22PXgxgqnh27"
 
@@ -207,13 +234,22 @@ class WaterTreatmentAutomator:
         #    Treatment Proposal document by copying that budget. The document also inherits the
         #    template's header settings, files, selection display, and payment schedule.
         print(f"\nBuilding budget and proposal from {len(packages_to_copy)} package(s)...")
+        # Name the job and the document's subject after what the customer requested, derived
+        # from the resolved package set (the document's own `name` is a constrained value and
+        # stays the template's "Water Treatment Proposal").
+        requested_name = build_document_name(packages_to_copy)
         doc = self.client.create_document_from_template(
             job_id,
             WATER_TREATMENT_PROPOSAL_TEMPLATE_ID,
             package_template_ids=packages_to_copy,
-            collapse_group_names=COLLAPSE_CHILDREN_GROUPS
+            collapse_group_names=COLLAPSE_CHILDREN_GROUPS,
+            subject=requested_name
         )
-        print(f"--> Proposal '{doc['name']}' (ID: {doc['id']}) created from the job budget!")
+        print(f"--> Proposal '{doc['name']}' (subject: '{requested_name}', ID: {doc['id']}) created from the job budget!")
+
+        # Rename the job from its default "Job ####" to the requested product(s).
+        self.client.update_job(job_id, name=requested_name)
+        print(f"--> Job renamed to '{requested_name}'.")
 
         # 6. Post Internal plumber-warning if pre-plumb status requires manual loop building
         if pre_plumbed_loop == "No" or pre_plumbed_loop is False:

@@ -203,6 +203,16 @@ class JobTreadClient:
         res = self.query(payload)
         return res["createJob"]["createdJob"]
 
+    def update_job(self, job_id, name=None):
+        """Update an existing job. Currently supports renaming (name, max 30 chars).
+
+        The job's `number` is separate and is not changed here.
+        """
+        args = {"id": job_id}
+        if name is not None:
+            args["name"] = name
+        self.query({"updateJob": {"$": args}})
+
     def create_cost_group(self, job_id=None, name=None, description=None, quantity=1, quantity_formula=None,
                           parent_cost_group_id=None, is_selected=None, is_simple_selection=None,
                           min_selections_required=None, max_selections_allowed=None,
@@ -503,7 +513,8 @@ class JobTreadClient:
             created_groups.append(res["createCostGroup"]["createdCostGroup"])
         return created_groups
 
-    def create_document_from_template(self, job_id, template_id, package_template_ids=None, collapse_group_names=None):
+    def create_document_from_template(self, job_id, template_id, package_template_ids=None, collapse_group_names=None,
+                                      subject=None):
         """Build the job budget from catalog packages, then create a document copying the budget.
 
         Mirrors JobTread's own "create document from budget" flow:
@@ -516,6 +527,9 @@ class JobTreadClient:
 
         The document also inherits the template's header settings, selection display, and
         payment schedule (scheduledDocuments — e.g. deposit + remaining balance).
+
+        subject sets the document's free-text subject line (its customer-facing description).
+        The document's `name` is a constrained value and always comes from the template.
         """
         # Phase 1: build the budget on the job from the catalog packages.
         budget_groups = self.create_budget_from_packages(job_id, package_template_ids, collapse_group_names)
@@ -625,6 +639,7 @@ class JobTreadClient:
         }
         if scheduled_documents:
             payload_args["scheduledDocuments"] = scheduled_documents
+        if subject: payload_args["subject"] = subject
         if to_address: payload_args["toAddress"] = to_address
         if to_email: payload_args["toEmailAddress"] = to_email
         if to_phone: payload_args["toPhoneNumber"] = to_phone
